@@ -1,4 +1,7 @@
 import pandas as pd
+import random
+
+import xlwt
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -6,191 +9,238 @@ data = pd.read_excel(
     'https://github.com/thoriqakhdn/FuzzyLogic/blob/main/bengkel.xlsx?raw=true')
 data
 
-# Membership Function Plot servis
 
-# servis (Bagus)
-servis_x_1 = [0, 60, 80, 100]
-servis_y_1 = [0, 0, 1, 1]
-plt.plot(servis_x_1, servis_y_1, label='Bagus', color='b')
-plt.show()
-
-# servis (Sedang)
-servis_x_2 = [0, 20, 40, 60, 80, 100]
-servis_y_2 = [0, 0, 1, 1, 0, 0]
-plt.plot(servis_x_2, servis_y_2, label='Sedang', color='y')
-plt.show()
-
-# servis (Buruk)
-servis_x_3 = [0, 20, 40, 100]
-servis_y_3 = [1, 1, 0, 0]
-plt.plot(servis_x_3, servis_y_3, label='Buruk', color='g')
-plt.show()
-
-# Combined Membership Function for servis
-plt.plot(servis_x_1, servis_y_1, label='Bagus')
-plt.plot(servis_x_2, servis_y_2, label='Sedang')
-plt.plot(servis_x_3, servis_y_3, label='Buruk')
-plt.show()
+def fuzifikasiservis(servis):
+    if servis <= 35:
+        hasil = [['kurang baik', 1]]
+    elif servis > 35 and servis < 55:
+        x = -(servis-55)/(55-35)
+        y = (servis-35)/(55-35)
+        hasil = [['kurang baik', x], ['cukup baik', y]]
+    elif servis == 55:
+        hasil = [['cukup baik', 1]]
+    elif servis > 55 and servis < 75:
+        x = -(servis-75)/(75-55)
+        y = (servis-55)/(75-55)
+        hasil = [['cukup baik', x], ['baik', y]]
+    elif servis == 75:
+        hasil = [['baik', 1]]
+    elif servis > 75 and servis < 90:
+        x = -(servis-90)/(90-75)
+        y = (servis-75)/(90-75)
+        hasil = [['baik', x], ['sangat baik', y]]
+    elif servis >= 90:
+        hasil = [['sangat baik', 1]]
+    return hasil
 
 
-def score__high(n):
-    if n > 80:
-        return 1
-    elif n <= 60:
-        return 0
+def fuzifikasiharga(harga):
+    if harga <= 3:
+        hasil = [['murah', 1]]
+    elif harga > 3 and harga < 6:
+        x = -(harga-6)/(6-3)
+        y = (harga-3)/(6-3)
+        hasil = [['murah', x], ['sedang', y]]
+    elif harga == 6:
+        hasil = [['sedang', 1]]
+    elif harga > 6 and harga < 9:
+        x = -(harga-9)/(9-6)
+        y = (harga-6)/(9-6)
+        hasil = [['sedang', x], ['mahal', y]]
+    elif harga >= 9:
+        hasil = [['mahal', 1]]
+    return hasil
+
+
+def fuzifikasi(servis, harga):
+    hasilservis = fuzifikasiservis(servis)
+    hasilharga = fuzifikasiharga(harga)
+    hasil = hasilservis + hasilharga
+    return hasil
+
+
+def fuzifikasicon(nilai1, nilai2):
+    if nilai1[0] == 'kurang baik' and nilai2[0] == 'murah':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'kurang baik' and nilai2[0] == 'sedang':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'kurang baik' and nilai2[0] == 'mahal':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'cukup baik' and nilai2[0] == 'murah':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'cukup baik' and nilai2[0] == 'sedang':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'cukup baik' and nilai2[0] == 'mahal':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'baik' and nilai2[0] == 'murah':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'baik' and nilai2[0] == 'sedang':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'baik' and nilai2[0] == 'mahal':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['tinggi', nilai]
+    if nilai1[0] == 'sangat baik' and nilai2[0] == 'murah':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'sangat baik' and nilai2[0] == 'sedang':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['rendah', nilai]
+    if nilai1[0] == 'sangat baik' and nilai2[0] == 'mahal':
+        if nilai1[1] < nilai2[1]:
+            nilai = nilai1[1]
+        else:
+            nilai = nilai2[1]
+        nk = ['tinggi', nilai]
+    return nk
+
+
+def fuzifikasidis(hasilcon):
+    rendah = []
+    tinggi = []
+    hasil = []
+    maxrendah = 0
+    maxtinggi = 0
+    for nilai in hasilcon:
+        if nilai[0] == 'rendah':
+            rendah.append(nilai)
+        else:
+            tinggi.append(nilai)
+    if len(rendah) != 0:
+        for nilai in rendah:
+            if nilai[1] > maxrendah:
+                maxrendah = nilai[1]
+    hasil.append(['rendah', maxrendah])
+    if len(tinggi) != 0:
+        for nilai in tinggi:
+            if nilai[1] > maxtinggi:
+                maxtinggi = nilai[1]
+    hasil.append(['tinggi', maxtinggi])
+    return hasil
+
+
+def inferensi(nilaifuzzy):
+    con = []
+    i = 0
+    while i < 2:
+        if nilaifuzzy[i][0] == 'murah' or nilaifuzzy[i][0] == 'sedang' or nilaifuzzy[i][0] == 'mahal':
+            break
+        j = 1
+        while j < (len(nilaifuzzy)):
+            if nilaifuzzy[j][0] == 'kurang baik' or nilaifuzzy[j][0] == 'cukup baik' or nilaifuzzy[j][0] == 'baik' or nilaifuzzy[j][0] == 'sangat baik':
+                j += 1
+            con.append(fuzifikasicon(nilaifuzzy[i], nilaifuzzy[j]))
+            j += 1
+        i += 1
+    return fuzifikasidis(con)
+
+
+def defuzifikasi(hasilinferensi):
+    rendah = [10, 20, 30, 40, 50]
+    antara = [60, 70]
+    tinggi = [80, 90, 100]
+    totalren, totalteng, totalteng1, totalteng2, totalting, penyebutteng = 0, 0, 0, 0, 0, 0
+    if len(hasilinferensi) == 1:
+        if hasilinferensi[0][0] == 'rendah':
+            nkrendah = hasilinferensi[0][1]
+        elif hasilinferensi[0][0] == 'tinggi':
+            nktinggi = hasilinferensi[0][1]
     else:
-        return (n - 60) / (80-60)
+        nkrendah = hasilinferensi[0][1]
+        nktinggi = hasilinferensi[1][1]
+
+    for nilai in rendah:
+        totalren += nilai
+    totalren = totalren * nkrendah
+
+    for nilai in antara:
+        x = -(nilai-80)/(80-50)
+        y = (nilai-50)/(80-50)
+        if nkrendah > x or nktinggi > y:
+            totalteng1 = nilai*x
+            totalteng2 = nilai*y
+            if totalteng1 > totalteng2:
+                totalteng += totalteng1
+                penyebutteng += x
+            else:
+                totalteng += totalteng2
+                penyebutteng += y
+        else:
+            totalteng1 = nilai*nkrendah
+            totalteng2 = nilai*nktinggi
+            if totalteng1 > totalteng2:
+                totalteng += totalteng1
+                penyebutteng += nkrendah
+            else:
+                totalteng += totalteng2
+                penyebutteng += nktinggi
+    for nilai in tinggi:
+        totalting += nilai
+    totalting = totalting * nktinggi
+    pembilang = totalren+totalteng+totalting
+    penyebut = (nkrendah*len(rendah))+penyebutteng+(nktinggi*len(tinggi))
+    hasil = pembilang/penyebut
+    plt.plot(p)
+    return hasil
 
 
-def score__mid(n):
-    if n > 80 or n <= 20:
-        return 0
-    elif n > 20 and n <= 40:
-        return (n - 20) / (40 - 20)
-    elif n > 40 and n <= 60:
-        return 1
-    elif n > 60 and n <= 80:
-        return (80 - n) / (80 - 60)
+calon = []
+for i in range(100):
+    nilai = fuzifikasi(data['servis'][i], data['harga'][i])
+    nk = inferensi(nilai)
+    calon.append([i+1, defuzifikasi(nk)])
+hasil = sorted(calon, key=lambda x: x[1], reverse=True)
+workbook = xlwt.Workbook()
+worksheet = workbook.add_sheet('bengkel')
 
+row = 1
 
-def score__low(n):
-    if n <= 20:
-        return 1
-    elif n > 40:
-        return 0
-    else:
-        return (40 - n) / (40 - 20)
+worksheet.write(0, 0, 'id')
+worksheet.write(0, 1, 'Score')
 
+for i in range(10):
+    worksheet.write(row, 0, hasil[i][0])
+    worksheet.write(row, 1, hasil[i][1])
+    row += 1
 
-for i in range(len(data)):
-    print(f"data ke {i} --> {data.iloc[i]['servis']}")
-    print(f"high = {score__high(data.loc[i]['servis'])}")
-    print(f"mid = {score__mid(data.loc[i]['servis'])}")
-    print(f"low = {score__low(data.loc[i]['servis'])}")
-    print('\n\n\n')
-
-# Membership Function Plot harga
-
-# harga (Murah)
-harga_x_1 = [0, 6, 8.5, 10]
-harga_y_1 = [0, 0, 1, 1]
-plt.plot(harga_x_1, harga_y_1, label='Murah', color='b')
-plt.show()
-
-# harga (Sedang)
-harga_x_2 = [0, 2, 4.5, 6.5, 8.5, 10]
-harga_y_2 = [0, 0, 1, 1, 0, 0]
-plt.plot(harga_x_2, harga_y_2, label='Sedang', color='y')
-plt.show()
-
-# harga (Buruk)
-harga_x_3 = [0, 2, 4.5, 10]
-harga_y_3 = [1, 1, 0, 0]
-plt.plot(harga_x_3, harga_y_3, label='Mahal', color='g')
-plt.show()
-
-# Combined Membership Function for harga
-
-plt.plot(harga_x_1, harga_y_1, label='Murah', color='b')
-plt.plot(harga_x_2, harga_y_2, label='Sedang', color='y')
-plt.plot(harga_x_3, harga_y_3, label='Mahal', color='g')
-
-
-def score_harga_high(n):
-    if n > 8.5:
-        return 1
-    if n <= 6:
-        return 0
-    return (n - 6) / (8.5 - 6)
-
-
-def score_harga_mid(n):
-    if n > 8 or n <= 2:
-        return 0
-    if n > 2 and n <= 4.5:
-        return (n - 2) / (5 - 2)
-    if n > 4.5 and n <= 6.5:
-        return 1
-    if n > 6.5 and n <= 8.5:
-        return (8.5 - n) / (8.5 - 6.5)
-
-
-def score_harga_low(n):
-    if n <= 2:
-        return 1
-    if n > 4.5:
-        return 0
-    return (4.5 - n) / (4.5 - 2)
-
-
-for i in range(len(data)):
-    print(f"data ke {i} --> {data.iloc[i]['harga']}")
-    print(f"high = {score_harga_high(data.iloc[i]['harga'])}")
-    print(f"mid = {score_harga_mid(data.iloc[i]['harga'])}")
-    print(f"low = {score_harga_low(data.iloc[i]['harga'])}")
-    print('\n\n\n')
-
-fuzzy = []
-
-for i in range(len(data)):
-    fuzzy.append([{'category': 'Sangat_bagus', 'score': min(score_harga_high(data.loc[i]['harga']), score__high(data.loc[i]['servis']))},
-                  {'category': 'Sangat_bagus', 'score': min(score_harga_high(
-                      data.loc[i]['harga']), score__mid(data.loc[i]['servis']))},
-                  {'category': 'Sedang', 'score': min(score_harga_high(
-                      data.loc[i]['harga']), score__low(data.loc[i]['servis']))},
-                  {'category': 'Sangat_bagus', 'score': min(score_harga_mid(
-                      data.loc[i]['harga']), score__high(data.loc[i]['servis']))},
-                  {'category': 'Sedang', 'score': min(score_harga_mid(
-                      data.loc[i]['harga']), score__mid(data.loc[i]['servis']))},
-                  {'category': 'Sedang', 'score': min(score_harga_mid(
-                      data.loc[i]['harga']), score__low(data.loc[i]['servis']))},
-                  {'category': 'Sedang', 'score': min(score_harga_low(
-                      data.loc[i]['harga']), score__high(data.loc[i]['servis']))},
-                  {'category': 'Buruk', 'score': min(score_harga_low(
-                      data.loc[i]['harga']), score__mid(data.loc[i]['servis']))},
-                  {'category': 'Buruk', 'score': min(score_harga_low(data.loc[i]['harga']), score__low(data.loc[i]['servis']))}])
-fuzzy
-
-result = []
-for i in range(len(fuzzy)):
-    max_Sangat_bagus = 0
-    max_Sedang = 0
-    max_Buruk = 0
-    for j in range(len(fuzzy[i])):
-        if fuzzy[i][j]['category'] == 'Sangat_bagus':
-            max_Sangat_bagus = max(max_Sangat_bagus, fuzzy[i][j]['score'])
-            #print(fuzzy[i][j]['score'], max_Sangat_bagus)
-        elif fuzzy[i][j]['category'] == 'Sedang':
-            max_Sedang = max(max_Sedang, fuzzy[i][j]['score'])
-            #print(fuzzy[i][j]['score'], max_Sedang)
-        elif fuzzy[i][j]['category'] == 'Buruk':
-            max_Buruk = max(max_Buruk, fuzzy[i][j]['score'])
-            #print(fuzzy[i][j]['score'], max_Buruk)
-    result.append([max_Sangat_bagus, max_Sedang, max_Buruk])
-
-result
-
-
-def sugeno(x, y, z):
-    return ((x * 100) + (y * 70) + (z * 50)) / (x + y + z)
-
-
-sugeno_result = []
-for i in range(len(result)):
-    #printf('Sangat_bagus = {result[i][0]}\nSedang = {result[i][1]}\nBuruk = {result[i][2]}')
-    sugeno_result.append(sugeno(result[i][0], result[i][1], result[i][2]), )
-
-sugeno_result
-
-datanew = data
-datanew['score'] = np.zeros(100)
-
-for i in range(len(datanew)):
-    datanew['score'][i] = sugeno_result[i]
-
-datanew = datanew.sort_values(['score'], ascending=False)
-datanew
-
-datanew2 = datanew.drop(['harga', 'servis'], axis=1)
-datanew2[:10].to_excel('peringkat.xlsx', index=False, header=True)
-datanew2[:10]
+workbook.save('peringkat.xls')

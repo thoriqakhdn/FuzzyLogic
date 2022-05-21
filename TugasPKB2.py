@@ -191,6 +191,6 @@ for i in range(len(datanew)):
 datanew = datanew.sort_values(['score'], ascending=False)
 datanew
 
-datanew2 = datanew.drop(['id', 'servis', 'score'], axis=1)
-datanew2[:10].to_excel('peringkat.xlsx', index=False, header=False)
+datanew2 = datanew.drop(['harga', 'servis'], axis=1)
+datanew2[:10].to_excel('peringkat.xlsx', index=False, header=True)
 datanew2[:10]

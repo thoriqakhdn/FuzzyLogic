@@ -220,7 +220,6 @@ def defuzifikasi(hasilinferensi):
     pembilang = totalren+totalteng+totalting
     penyebut = (nkrendah*len(rendah))+penyebutteng+(nktinggi*len(tinggi))
     hasil = pembilang/penyebut
-    plt.plot(p)
     return hasil
 
 
